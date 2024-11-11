@@ -1,30 +1,34 @@
-export function solution(lottos, win_nums) {
-  const zeroArray = lottos.filter((number) => number === 0);
-  const zeroCount = zeroArray.length;
-  if (zeroCount === 6) {
-    return [1, 6];
-  }
+const lottos = (lottos, win_nums) => {
+  const frequencyArrayWithLottos = {};
+  const frequencyArrayWithWin = {};
 
-  const anotherArray = lottos.filter((number) => number !== 0);
-
-  let correctCount = 0;
-  anotherArray.forEach((number) => {
-    win_nums.forEach((winNum) => {
-      if (winNum === number) {
-        correctCount++;
-      }
-    });
+  lottos.forEach((element) => {
+    frequencyArrayWithLottos[element] =
+      (frequencyArrayWithLottos[element] ?? 0) + 1;
   });
 
-  const ranking = [6, 5, 4, 3, 2, 1];
+  win_nums.forEach((element) => {
+    frequencyArrayWithWin[element] = (frequencyArrayWithWin[element] ?? 0) + 1;
+  });
 
-  if (correctCount === 0) {
-    return [ranking[correctCount + zeroCount], ranking[correctCount]];
-  }
+  const zeroCount = frequencyArrayWithLottos[0] ?? 0;
 
-  var answer = [
-    ranking[correctCount + zeroCount - 1],
-    ranking[correctCount - 1],
+  let matchingCountWithoutZero = 0;
+
+  lottos.forEach((element) => {
+    if (element !== 0 && element in frequencyArrayWithWin) {
+      matchingCountWithoutZero++;
+    }
+  });
+
+  const matchingCountToRank = [6, 6, 5, 4, 3, 2, 1];
+
+  const answer = [
+    matchingCountToRank[matchingCountWithoutZero + zeroCount],
+    matchingCountToRank[matchingCountWithoutZero],
   ];
+
   return answer;
-}
+};
+
+export default lottos;
