@@ -1,20 +1,18 @@
 const countUniqueValues = (sortedArray) => {
-  let uniqueValueCount = sortedArray.length === 0 ? 0 : 1;
+  if (sortedArray.length === 0) return 0;
 
   let left = 0;
   let right = 1;
 
   while (right < sortedArray.length) {
-    if (sortedArray[left] === sortedArray[right]) {
-      right++;
-    } else {
-      uniqueValueCount++;
-      left = right;
-      right++;
+    if (sortedArray[left] !== sortedArray[right]) {
+      left++;
+      sortedArray[left] = sortedArray[right];
     }
+    right++;
   }
 
-  return uniqueValueCount;
+  return left + 1;
 };
 
 export default countUniqueValues;
